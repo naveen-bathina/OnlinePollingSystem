@@ -52,7 +52,8 @@ namespace Ops.Api.Services
                     VoteCount = o.VoteCount
                 }).ToList(),
                 HasVoted = votes.Any(v => v.PollId == p.Id), // Check if the user has voted
-                VotedOptionId = votes.FirstOrDefault(v => v.PollId == p.Id)?.OptionId // Get voted option ID if exists
+                VotedOptionId = votes.FirstOrDefault(v => v.PollId == p.Id)?.OptionId, // Get voted option ID if exists
+                ExpirationDate = p.ExpirationDate,
             });
 
             return pollDtos;

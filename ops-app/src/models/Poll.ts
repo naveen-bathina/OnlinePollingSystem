@@ -11,9 +11,11 @@ export interface Poll {
     options: PollOption[];
     hasVoted: boolean;
     votedOptionId?: number;
+    expirationDate?: Date;
 }
 
 export interface CreatePoll {
     question: string;
     options: string[];
+    expirationDate: Date | null;
 }

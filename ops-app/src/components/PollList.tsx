@@ -61,10 +61,13 @@ const PollList: React.FC = () => {
                                 <Typography variant="body2" color="text.secondary" gutterBottom>
                                     {poll.options.reduce((sum, option) => sum + option.voteCount, 0)} {poll.options.reduce((sum, option) => sum + option.voteCount, 0) > 1 ? 'Votes' : 'Vote'}
                                 </Typography>
+                                <Typography variant="body2" color="error" gutterBottom>
+                                    {poll.expirationDate ? `Expires on: ${new Date(poll.expirationDate).toLocaleDateString()} ${new Date(poll.expirationDate).toLocaleTimeString()}` : 'No expiration'}
+                                </Typography>
                             </CardContent>
                             <Box display="flex" justifyContent="space-between" p={2}>
 
-                                {!poll.hasVoted && (
+                                {!poll.hasVoted && new Date(poll.expirationDate!) > new Date() && (
                                     <Button
                                         variant="contained"
                                         color="primary"

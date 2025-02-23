@@ -7,6 +7,8 @@ namespace Ops.Api.Models
     {
         public string Question { get; set; }
         public string[] Options { get; set; }
+        public DateTime ExpirationDate { get; set; }
+
     }
 
     public class PollDto
@@ -16,6 +18,7 @@ namespace Ops.Api.Models
         public List<PollOptionDto> Options { get; set; }
         public bool HasVoted { get; set; }
         public int? VotedOptionId { get; set; }
+        public DateTime ExpirationDate { get; set; }
 
     }
 
