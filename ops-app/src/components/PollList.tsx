@@ -7,6 +7,7 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useNavigate } from 'react-router-dom';
 import { Poll } from '../models/Poll';
 import PollApiService from '../services/PollApiService';
+import EventIcon from '@mui/icons-material/Event';
 
 const PollList: React.FC = () => {
     const pollService = new PollApiService('https://localhost:7262/api');
@@ -62,7 +63,10 @@ const PollList: React.FC = () => {
                                     {poll.options.reduce((sum, option) => sum + option.voteCount, 0)} {poll.options.reduce((sum, option) => sum + option.voteCount, 0) > 1 ? 'Votes' : 'Vote'}
                                 </Typography>
                                 <Typography variant="body2" color="error" gutterBottom>
-                                    {poll.expirationDate ? `Expires on: ${new Date(poll.expirationDate).toLocaleDateString()} ${new Date(poll.expirationDate).toLocaleTimeString()}` : 'No expiration'}
+                                    <EventIcon sx={{ verticalAlign: 'middle', marginRight: 1 }} />
+                                    {poll.expirationDate
+                                        ? `Expires on: ${new Date(poll.expirationDate).toLocaleDateString()} ${new Date(poll.expirationDate).toLocaleTimeString()}`
+                                        : 'No expiration'}
                                 </Typography>
                             </CardContent>
                             <Box display="flex" justifyContent="space-between" p={2}>
