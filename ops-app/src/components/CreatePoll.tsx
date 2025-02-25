@@ -10,7 +10,7 @@ import PollApiService from '../services/PollApiService';
 import dayjs from 'dayjs';
 
 const CreatePoll: React.FC = () => {
-    const pollService = new PollApiService('https://localhost:7262/api');
+    const pollService = new PollApiService();
 
     const [pollTitle, setPollTitle] = useState<string>('');
     const [options, setOptions] = useState<string[]>(['']);

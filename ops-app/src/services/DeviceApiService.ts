@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { Constants } from '../constants';
 
 export default class DeviceApiService {
     private baseUrl: string;
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
+    constructor() {
+        this.baseUrl = Constants.API_BASE_URL;
     }
 
     async getDeviceId(): Promise<DeviceDetails> {

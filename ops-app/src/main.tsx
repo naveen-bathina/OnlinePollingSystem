@@ -6,9 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { PollProvider } from "./contexts/PollingContext";
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <PollProvider>
-      <App />
-    </PollProvider>
-  </StrictMode>,
+  <PollProvider>
+    <App />
+  </PollProvider>
 )

@@ -1,19 +1,20 @@
 import axios, { AxiosInstance } from 'axios';
 import { CreatePoll, Poll } from '../models/Poll';
 import cookies from 'js-cookie';
+import { Constants } from '../constants';
 
 class PollApiService {
     private baseUrl: string;
     private deviceId: string;
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
+    constructor() {
+        this.baseUrl = Constants.API_BASE_URL;
         this.deviceId = cookies.get('deviceId') || '';
     }
 
     getAxios = (): AxiosInstance => {
         return axios.create({
-            baseURL: 'https://localhost:7262/api',
+            baseURL: this.baseUrl,
             headers: {
                 'Device-Id': this.deviceId,
                 'Content-Type': 'application/json',

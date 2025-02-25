@@ -37,7 +37,7 @@ const theme = createTheme({
 const App: React.FC = () => {
 
   React.useEffect(() => {
-    const deviceService = new DeviceApiService('https://localhost:7262/api');
+    const deviceService = new DeviceApiService();
     const fetchDeviceId = async () => {
       try {
         const existingDeviceId = cookies.get('deviceId');

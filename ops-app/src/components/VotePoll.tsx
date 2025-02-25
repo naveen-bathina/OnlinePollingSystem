@@ -8,7 +8,7 @@ import PollApiService from '../services/PollApiService';
 import { Poll } from '../models/Poll';
 
 const VotePoll: React.FC = () => {
-    const pollService = new PollApiService('https://localhost:7262/api');
+    const pollService = new PollApiService();
 
     const { pollId } = useParams<{ pollId: string }>();
     const navigate = useNavigate();

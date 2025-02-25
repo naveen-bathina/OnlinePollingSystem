@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import PollApiService from '../services/PollApiService';
 import { Poll } from '../models/Poll';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { subscribeToPollUpdates } from '../services/signalRService';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7f50', '#ff69b4'];
 
@@ -14,7 +15,21 @@ const Results: React.FC = () => {
     const [totalVotes, setTotalVotes] = useState(0);
 
     useEffect(() => {
-        const pollService = new PollApiService('https://localhost:7262/api');
+
+        subscribeToPollUpdates((updatedPollId: number) => {
+            console.log('Received poll update:', updatedPollId);
+            if (updatedPollId === Number(pollId)) {
+                console.log('Updating poll...');
+                pollService.getPollResults(updatedPollId).then((fetchedPoll) => {
+                    setPoll(fetchedPoll);
+                    setTotalVotes(fetchedPoll.options.reduce((acc, option) => acc + option.voteCount, 0));
+                }).catch(error => {
+                    console.error('Error fetching poll:', error);
+                });
+            }
+        });
+
+        const pollService = new PollApiService();
         const fetchPollResult = async () => {
             try {
                 const fetchedPoll = await pollService.getPollResults(Number(pollId));
