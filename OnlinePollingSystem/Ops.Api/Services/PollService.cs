@@ -142,7 +142,8 @@ namespace Ops.Api.Services
                     VoteCount = o.VoteCount
                 }).ToList(),
                 HasVoted = votes.Any(), // If there is at least one vote, the user has voted
-                VotedOptionId = votes.FirstOrDefault()?.OptionId // Get voted option ID if exists
+                VotedOptionId = votes.FirstOrDefault()?.OptionId, // Get voted option ID if exists
+                ExpirationDate = poll.ExpirationDate
             };
         }
 
@@ -177,7 +178,8 @@ namespace Ops.Api.Services
                     VoteCount = o.VoteCount
                 }).ToList(),
                 HasVoted = votes.Any(), // If there is at least one vote, the user has voted
-                VotedOptionId = votes.FirstOrDefault()?.OptionId // Get voted option ID if exists
+                VotedOptionId = votes.FirstOrDefault()?.OptionId, // Get voted option ID if exists
+                ExpirationDate = poll.ExpirationDate
             };
         }
 
