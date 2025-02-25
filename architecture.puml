@@ -1,0 +1,45 @@
+@startuml
+!option handwritten true
+!theme sketchy-outline
+skinparam linetype ortho
+
+title
+    === 🗳️ Online Polling Service
+end title
+
+' Define colors for components
+skinparam RectangleBackgroundColor LightBlue
+skinparam DatabaseBackgroundColor Gold
+skinparam ArrowColor Gray
+skinparam ArrowThickness 2
+skinparam Shadowing true
+
+frame "🗳️ Online Polling System" {
+
+    node "Frontend" as FE {
+        [🌐 Web App (React.js)] 
+        [📱 Mobile App (MAUI)] 
+    }
+
+    node "Backend (Ops.Api)" as BE {
+        [🔗 REST API]
+        [📡 SignalR Hub]
+    }
+
+    node "Databases" {
+        database "🛢️ SQL Server" as DB {
+            [📊 PollingDB]
+        }
+    }
+
+    ' External connections (Frontend → Backend) - BLUE
+    [🌐 Web App (React.js)] -[#1E90FF,thickness=3]-> [🔗 REST API] : 🔵 REST Calls
+    [🌐 Web App (React.js)] <-[#DC143C,thickness=3]- [📡 SignalR Hub] : 🔴 WebSockets
+    [📱 Mobile App (MAUI)] -[#1E90FF,thickness=3]-> [🔗 REST API] : 🔵 REST Calls
+    [📱 Mobile App (MAUI)] <-[#DC143C,thickness=3]- [📡 SignalR Hub] : 🔴 WebSockets
+
+    ' Internal connections (Backend → DB & SignalR Hub) - GREEN
+    [🔗 REST API] -[#32CD32,thickness=3]--> [📊 PollingDB] : 🟢 Queries & Transactions
+    [🔗 REST API] -[#32CD32,thickness=3]-> [📡 SignalR Hub] : 🟢 Push Poll Updates
+}
+@enduml

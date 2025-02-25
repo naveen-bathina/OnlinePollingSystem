@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Ops.Api.Models;
 using Ops.Api.Repositories;
 using Ops.Api.Services;
 
@@ -20,15 +21,15 @@ namespace Ops.Api
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy(name: "CORS_POLICY_LOCALHOST",
-                                  builder =>
-                                  {
-                                      builder
-                                        .WithOrigins("http://localhost:5173") // specifying the allowed origin
-                                        .WithMethods("GET", "POST", "PUT", "DELETE", "PATCH") // defining the allowed HTTP method
-                                        .AllowAnyHeader() // allowing any header to be sent
-                                        .AllowCredentials();
-                                  });
+                
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.SetIsOriginAllowed(origin =>
+                        new Uri(origin).Host == "localhost")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials();
+                });
             });
 
             // Add Swagger generation
@@ -56,6 +57,8 @@ namespace Ops.Api
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -70,13 +73,18 @@ namespace Ops.Api
                 });
             }
 
-            app.UseHttpsRedirection();
+            if (app.Environment.IsProduction())
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseAuthorization();
 
-            app.UseCors("CORS_POLICY_LOCALHOST");
+            app.UseCors("CorsPolicy");
 
             app.MapControllers();
+
+            app.MapHub<PollHub>("/pollHub");
 
             app.Run();
         }

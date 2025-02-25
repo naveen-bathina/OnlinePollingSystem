@@ -73,7 +73,8 @@ namespace Ops.Api.Services
                 newPoll.Id = 0;
                 newPoll.Question = createPollModel.Question;
                 newPoll.Options = createPollModel.Options.Select(x => new PollOption() { Id = 0, OptionText = x, PollId = newPoll.Id, VoteCount = 0 }).ToList();
-
+                newPoll.ExpirationDate = createPollModel.ExpirationDate;
+          
                 _context.Polls.Add(newPoll);
                 await _context.SaveChangesAsync();
 
