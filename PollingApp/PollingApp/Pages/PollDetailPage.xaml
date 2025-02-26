@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:PollingApp.PageViewModels"
+             x:Class="PollingApp.Pages.PollDetailPage"
+             Title="Poll Detail">
+    <Grid>
+        <!-- Progress Indicator -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                   IsRunning="{Binding IsBusy}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Color="{StaticResource PrimaryColor}" />
+
+        <!-- Poll Detail -->
+        <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+            <Label Text="{Binding SelectedPoll.Question}" FontSize="Large" FontAttributes="Bold" />
+            <CollectionView ItemsSource="{Binding SelectedPoll.Options}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton Content="{Binding OptionText}"
+                                 IsChecked="{Binding IsSelected}"
+                                 IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PollDetailViewModel}}, Path=SelectedPoll.HasVoted, Converter={StaticResource InverseBooleanConverter}}"
+                                 CheckedChanged="OnRadioButtonCheckedChanged"
+                                 BindingContext="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="Submit Vote"
+                Command="{Binding SubmitVoteCommand}"
+                IsEnabled="{Binding SelectedPoll.HasVoted, Converter={StaticResource InverseBooleanConverter}}"
+                HorizontalOptions="Center"
+                Margin="0,20,0,0" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

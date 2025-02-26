@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             x:Class="PollingApp.Pages.PollResultPage"
+             Title="Poll Results">
+    <Grid>
+
+        <!-- Progress Indicator -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+           IsRunning="{Binding IsBusy}"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           Color="{StaticResource PrimaryColor}" />
+
+        <!-- Poll Result -->
+        <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+            <Label Text="{Binding PollResult.Question}" 
+               FontSize="Large" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" 
+               Margin="0,20,0,10" />
+
+            <!-- Pie Chart -->
+            <chart:SfCircularChart>
+                <chart:SfCircularChart.Series>
+                    <chart:PieSeries ItemsSource="{Binding ChartData}"
+                                 XBindingPath="Option"
+                                 YBindingPath="Votes"
+                                 ShowDataLabels="True">
+                        <chart:PieSeries.DataLabelSettings>
+                            <chart:CircularDataLabelSettings LabelPlacement="Outer" />
+                        </chart:PieSeries.DataLabelSettings>
+                    </chart:PieSeries>
+                </chart:SfCircularChart.Series>
+            </chart:SfCircularChart>
+
+            <!-- Back Button -->
+            <Button Text="Back to Home" 
+                Command="{Binding GoToHomeCommand}" 
+                HorizontalOptions="Center" 
+                Margin="0,20,0,0" />
+        </StackLayout>
+    </Grid>
+</ContentPage>
