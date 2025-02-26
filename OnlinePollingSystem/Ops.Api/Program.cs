@@ -23,10 +23,10 @@ namespace Ops.Api
             {
                 options.AddPolicy("CorsPolicy", builder =>
                 {
-                    builder.WithOrigins("http://localhost", "http://10.0.2.2") 
+                    builder.WithOrigins("http://localhost", "http://localhost:5173", "http://10.0.2.2")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowCredentials(); 
+                        .AllowCredentials();
                 });
             });
 

@@ -5,24 +5,19 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
     environment:
-      # Strong password meeting SQL Server complexity requirements
-      SA_PASSWORD: "YourStrong!Passw0rd"
-      # Accept the End User License Agreement
-      ACCEPT_EULA: "Y"
-      # Use Express edition (free tier)
-      MSSQL_PID: "Express"
+      SA_PASSWORD: "YourStrong!Passw0rd" # Strong password meeting SQL Server complexity requirements
+      ACCEPT_EULA: "Y" # Accept the End User License Agreement
+      MSSQL_PID: "Express" # Use Express edition (free tier)
     ports:
-      # Map host port 1433 to container port 1433
-      - "1433:1433"
+      - "1433:1433" # Map host port 1433 to container port 1433
     volumes:
-      # Persist SQL Server data outside the container
-      - sql_data:/var/opt/mssql
+      - sql_data:/var/opt/mssql # Persist SQL Server data outside the container
     healthcheck:
-      # Ensure SQL Server is ready before the API starts
-      test: [ "CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'YourStrong!Passw0rd' -Q 'SELECT 1' || exit 1" ]
+      test: [ "CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"YourStrong!Passw0rd\" -Q \"SELECT 1\" || exit 1" ]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   polling_api:
     image: polling_api:latest
@@ -34,19 +29,33 @@ services:
       sqlserver:
         condition: service_healthy # Wait for SQL Server to be healthy
     environment:
-      # Connection string for SQL Server
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=PollingDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
-      # ASP.NET Core environment
       ASPNETCORE_ENVIRONMENT: "Development"
-      # URLs for HTTP and HTTPS (adjust ports if needed)
       ASPNETCORE_URLS: "http://+:8090"
     ports:
-      # Map host port 8080 to container port 8080 (HTTP)
       - "8090:8090"
-    restart: always
+    restart: unless-stopped
     volumes:
-      # Optional: Mount appsettings.json if external config is needed
-      - ./OnlinePollingSystem/Ops.Api/appsettings.json:/app/appsettings.json:ro
+      - ./OnlinePollingSystem/Ops.Api/appsettings.json:/app/appsettings.json:ro # Optional external config
+
+  react-app:
+    build:
+      context: ./ops-app
+      dockerfile: Dockerfile
+    container_name: react-app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./ops-app:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+    tty: true
+    depends_on:
+      polling_api:
+        condition: service_started # Ensure backend starts before frontend
+    restart: unless-stopped
 
 volumes:
   sql_data: # Named volume for persistent SQL Server data

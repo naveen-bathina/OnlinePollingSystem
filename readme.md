@@ -1,57 +1,150 @@
-# Online Polling System
 
-## Problem Overview
+## **📌 Online Polling System**
 
-Build a **simple online polling system** that allows users to:
+A full-stack online polling application with a **React frontend (Vite)**, **ASP.NET Core API**, and **SQL Server**, running via **Docker Compose**.
 
-- Create polls with multiple choice options.
-- Vote on polls.
-- See real-time results of the polls after voting.
-- Optionally, track user participation to ensure each user votes only once per poll without the need for registration.
+---
 
-The application should have the following components:
+## **🚀 Features**
 
-1. Backend API (ASP.NET Core)
-2. Frontend Web Interface (React.js)
-3. Mobile Application (.NET MAUI)
-4. Database (SQL Server)
+✅ Create and vote on polls  
+✅ Real-time poll updates using **SignalR**  
+✅ Data persistence with **SQL Server**  
+✅ Full stack runs using **Docker Compose**  
 
-## Core Features
+---
 
-1. Poll Creation
-   - Users can create a poll by specifying:
-     - Poll title: A question (e.g., "What's your favorite programming language?")
-     - Options: Multiple choice answers (e.g., "C#", "JavaScript", "Python")
-     - Poll duration: Set a start and end date for voting.
-   - Polls must be stored in the database, including the poll's title, options, and vote counts.
+## **📂 Project Structure**
 
-2. Voting on Polls
-   - Anyone can vote on a poll.
-   - After voting, the user sees the updated poll results (e.g., vote count per option).
-   - Users can vote once per poll (optional).
+```
+OnlinePollingSystem/
+|── PollingApp/                # MAUI framework (Mobile App)
+│── ops-app/                   # React Frontend (Web App)
+│── OnlinePollingSystem/       # Backend (ASP.NET Core API)
+│── docker-compose.yml         # Docker Compose for full stack
+│── .gitignore                 # Ignore unnecessary files
+│── README.md                  # Documentation
+│── sqlserver-data/            # Persistent SQL Server data volume
+```
 
-3. Poll Results
-   - After voting, users can view the **real-time results** of the poll.
-   - Results are presented in a clear, visually appealing way, such as a **bar chart** or **pie chart** (Recharts).
+---
 
-4. Poll Expiry
-   - Polls can expire after the end date (if a date range is specified), after which voting is disabled and final results are displayed.
-   - Expired polls should still be viewable for historical reference but voting should be locked.
+## **🔧 Prerequisites**
 
-5. Admin Features (Optional)
-   - Admin users can manage (edit, delete) polls.
-   - Admins can see statistics such as how many votes were cast, active vs. expired polls, etc.
+Ensure you have the following installed:
 
-## **Bonus Features**
+- **Docker & Docker Compose** → [Download](https://www.docker.com/get-started)  
+- **Git** → [Download](https://git-scm.com/downloads)  
+- **.NET SDK (if running API locally)** → [Download](https://dotnet.microsoft.com/download)  
+- **Node.js & npm (if running React locally)** → [Download](https://nodejs.org/)  
 
-- **Poll Sharing**: Allow users to share polls.
-- **Admin Dashboard**: For admins to manage polls, view stats, and delete expired/irrelevant polls.
-- **Poll Comments**: Users can leave comments on polls to discuss the results or poll topics.
+---
 
-## **Evaluation Criteria**
+## **🛠️ Setup & Run with Docker (Recommended)**
 
-- **Backend**: Proper API design for poll creation, voting, and results.
-- **Frontend**: Clean and responsive UI with easy navigation for voting and viewing results. Proper state management with React hooks.
-- **Mobile**: Intuitive mobile app that mimics the web app and handles offline functionality.
-- **Database**: Efficient design of the database schema and use of relationships (polls, options, votes).
-- **Code Quality**: Clear, readable, maintainable and testable code with proper structure, comments, and documentation.
+1️⃣ Clone the repository:
+
+```sh
+git clone https://github.com/naveen-bathina/OnlinePollingSystem.git
+cd OnlinePollingSystem
+```
+
+2️⃣ Run the project using Docker Compose:
+
+```sh
+docker-compose up --build
+```
+
+3️⃣ Access the services:
+
+- **API** → `http://localhost:8090`
+- **Frontend (React App)** → `http://localhost:5173`
+- **SQL Server (Docker)** → Runs on port `1433`
+
+---
+
+## **💻 Running Locally Without Docker**
+
+### 1️⃣ **Run Backend (ASP.NET Core)**
+
+```sh
+cd OnlinePollingSystem/Ops.Api
+dotnet restore
+dotnet run
+```
+
+API should now be running at **`http://localhost:5000`**
+
+### 2️⃣ **Run Frontend (React, Vite)**
+
+```sh
+cd ops-app
+npm install
+npm run dev
+```
+
+React app should now be running at **`http://localhost:5173`**
+
+---
+
+## **🐳 Managing Docker Containers**
+
+| Command | Description |
+|---------|------------|
+| `docker-compose up --build` | Build & start all containers |
+| `docker-compose up -d` | Start containers in the background |
+| `docker-compose down` | Stop all containers |
+| `docker-compose logs -f` | View logs |
+| `docker system prune -a` | Clean up unused Docker images & containers |
+
+---
+
+## **⚠️ Troubleshooting**
+
+### ❌ **Port Already in Use?**
+
+Run:
+
+```sh
+netstat -ano | findstr :PORT
+taskkill /PID <PID> /F
+```
+
+Replace `PORT` with `8090`, `5173`, or `1433`.
+
+### ❌ **Docker Volume Issues?**
+
+Remove volumes & restart:
+
+```sh
+docker-compose down -v
+docker-compose up --build
+```
+
+### ❌ **React App Not Loading?**
+
+Try:
+
+```sh
+cd ops-app
+rm -rf node_modules package-lock.json
+npm install
+npm run dev
+```
+
+---
+
+## **📜 License**
+
+This project is licensed under **MIT License**.
+
+---
+
+## **✉️ Contact**
+
+For any questions, feel free to reach out  !
+Naveen Bathina | <naveen.bathina24@outlook.com> | +91 962 043 0945
+
+---
+
+## Thank you
