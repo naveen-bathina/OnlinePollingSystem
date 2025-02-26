@@ -21,14 +21,12 @@ namespace Ops.Api
 
             builder.Services.AddCors(options =>
             {
-                
                 options.AddPolicy("CorsPolicy", builder =>
                 {
-                    builder.SetIsOriginAllowed(origin =>
-                        new Uri(origin).Host == "localhost")
-                           .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           .AllowCredentials();
+                    builder.WithOrigins("http://localhost", "http://10.0.2.2") 
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials(); 
                 });
             });
 
